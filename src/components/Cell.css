@@ -1,0 +1,9 @@
+.grid-cell {
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    border: 1px solid #ccc; /* Border for cells */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Add any other desired styles (background, margin, etc.) */
+}

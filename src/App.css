@@ -1,0 +1,97 @@
+.Histogram, .circuit-grid-container .circuit-grid table {
+  border-collapse: collapse; 
+  width: auto;
+  margin: 0 auto;
+  
+}
+
+
+
+
+.circuit-grid-container .circuit-grid tr {
+  position: relative;
+}
+
+
+.circuit-grid-container .circuit-grid tr::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px solid black;
+  z-index: 0;
+}
+
+
+.circuit-grid-container .circuit-grid td {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  border: none;
+  padding: 10px 0;
+}
+
+
+.circuit-grid-container .circuit-grid .gate-cell {
+  background-color: #027a24;
+  color: white; 
+  border-radius: 10px; 
+  position: relative;
+  z-index: 1;
+  
+  
+
+}
+
+.circuit-grid-container .circuit-grid .gate-cell::after {
+  content: attr(data-gate);
+  position: relative;
+  border-radius: 4px;
+  background-color: #027a24; 
+  color: white;
+  z-index: 1;
+  font-size: 0.8rem;
+  font-weight: bold;
+  
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  text-align: center;
+}
+
+
+.btn-custom {
+  width: 120px;  
+  height: 70px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.result-section {
+  /* Additional styling if needed */
+}
+
+.result-section h2 {
+  color: #333;
+
+}
+
+.result-content {
+  padding: 1rem;
+  border-radius: 0.25rem;
+  background: #f8f9fa;
+  margin-top: 1rem;
+}
+
+
