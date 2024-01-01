@@ -67,7 +67,7 @@ const CircuitGrid = () => {
 
   const handleSubmit = () => {
     const submissionData = createSubmissionData();
-    const url = `http://localhost:18080/qpl/${submissionData}`;
+    const url = `http://34.125.178.238:18080/qpl/${submissionData}`;
     console.log(url);
   
     // Example: Fetch API to submit data
