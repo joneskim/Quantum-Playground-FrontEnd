@@ -1,23 +1,17 @@
-import './App.css';
-// fetch data from backend using react fetch
-import React, { useState, useEffect } from 'react';
-import QuantumCircuitSimulator from './components/Component';
-import CircuitGrid from './components/CircuitGrid';
-import ToolBar from './components/ToolBar';
-// import bootstrap
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import SimulatorPage from './components/QuantumSimulator';
 
 function App() {
-
-
-    return (
-
-        <div className='container'>
-            <ToolBar />
-            <CircuitGrid />
-        </div>
-    );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/simulator" element={<SimulatorPage />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
