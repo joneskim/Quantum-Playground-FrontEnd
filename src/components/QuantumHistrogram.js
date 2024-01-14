@@ -2,12 +2,10 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
-const QuantumStateHistogram = ({ numQubits, quantumStates }) => {
+const QuantumStateHistogram = ({ numQubits, probabilities}) => {
   const labels = Array.from({ length: Math.pow(2, numQubits) }, 
     (_, i) => i.toString(2).padStart(numQubits, '0'));
 
-  const probabilities = quantumStates.map(state => 
-    Math.pow(state.real, 2) + Math.pow(state.imag, 2));
 
   const data = {
     labels,

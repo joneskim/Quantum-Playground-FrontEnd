@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import QuantumStateHistogram from './QuantumHistrogram';
 
+const parseAndSetup = require('../logic/run');
+
+const math = require('mathjs');
+
 const CircuitGrid = () => {
   const [data, setData] = useState([]);
   const [numQubits, setNumQubits] = useState(3); // Default number of qubits
@@ -59,7 +63,7 @@ const CircuitGrid = () => {
     }
     operationString = operationString.replace(/-+$/, '');
 
-    console.log(`${numQubits}:${qubitStates}:${operationString}`);
+    // console.log(`${numQubits}:${qubitStates}:${operationString}`);
   
     return `${numQubits}:${qubitStates}:${operationString}`;
   };
@@ -67,19 +71,10 @@ const CircuitGrid = () => {
 
   const handleSubmit = () => {
     const submissionData = createSubmissionData();
-    const url = `https://34.125.178.238:18080/qpl/${submissionData}`;
-    console.log(url);
-  
-    // Example: Fetch API to submit data
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        setData(data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    const response = parseAndSetup(submissionData);
+    setData(response);
+    // console.log("response: ", response);
+
   };
   
 
@@ -145,9 +140,13 @@ const CircuitGrid = () => {
     <div className="result-section mt-4 p-3 border rounded shadow-sm bg-white">
   <h2 className="text-center mb-3">Result</h2>
   <div className="result-content">
-    {data && data.state && (
-      <QuantumStateHistogram numQubits={numQubits} quantumStates={data.state} />
-    )}
+    {data.length > 0 ? (
+      <QuantumStateHistogram numQubits={numQubits} probabilities={data} />
+    ) : (
+      <p className="text-center">No data to display</p>
+    )
+    }
+
   </div>
 </div>
 
