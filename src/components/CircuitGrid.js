@@ -7,7 +7,7 @@ const math = require('mathjs');
 
 const CircuitGrid = () => {
   const [data, setData] = useState([]);
-  const [numQubits, setNumQubits] = useState(3); // Default number of qubits
+  const [numQubits, setNumQubits] = useState(2); // Default number of qubits
   const [numOperations, setNumOperations] = useState(5); // Default number of operations
   const [grid, setGrid] = useState(Array(numQubits).fill().map(() => Array(numOperations).fill(null)));
 
@@ -23,7 +23,7 @@ const CircuitGrid = () => {
   };
 
   const removeQubit = () => {
-    if (numQubits > 1) {
+    if (numQubits > 2) {
       setNumQubits(prev => prev - 1);
       setGrid(prev => prev.slice(0, -1));
     }
@@ -117,10 +117,10 @@ const CircuitGrid = () => {
     </div>
 
     <div className="controls d-flex justify-content-around mb-5">
-          <button className="btn btn-outline-primary btn-custom mx-1" onClick={addQubit} title="Add a new qubit to the circuit">
+          <button className="btn btn-outline-primary btn-custom mx-1" onClick={addQubit} disabled = {numQubits >= 8} title="Add a new qubit to the circuit">
             Add Qubit
           </button>
-          <button className="btn btn-outline-primary btn-custom mx-1" onClick={removeQubit} disabled={numQubits <= 1} title="Remove the last qubit from the circuit">
+          <button className="btn btn-outline-primary btn-custom mx-1" onClick={removeQubit} disabled={numQubits <= 2} title="Remove the last qubit from the circuit">
             Remove Qubit
           </button>
           <button className="btn btn-outline-primary btn-custom mx-1" onClick={addOperation} title="Add a new operation to the qubit">
