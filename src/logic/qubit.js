@@ -2,8 +2,8 @@ const math = require('mathjs');
 
 class Qubit {
     constructor(state = math.matrix([
-        new math.Complex(1, 0),
-        new math.Complex(0, 0)
+        new math.complex(1, 0),
+        new math.complex(0, 0)
         ])) {
         this.state = state;
     }
@@ -50,8 +50,8 @@ class TensoredQubits extends Qubit {
     applyGate({ gate, qubitIndex, controlQubitIndex }) {
         if (controlQubitIndex == 0) {
             this.qubits[qubitIndex].applyGate(gate);
-        } else {
-            throw new Error('Control qubits are not supported yet');
+            console.log(gate.getMatrix().toString(), qubitIndex)
+            console.log('Applied gate to qubit', this.qubits[qubitIndex].getState().toString(), 'qubitIndex', qubitIndex);
         }
     }
 

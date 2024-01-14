@@ -4,7 +4,6 @@ const math = require('mathjs');
 
 
 function parseAndSetup(submissionData) {
-    // console.log("submissionData: ", submissionData);
     const [numQubitsString, qubitStatesString, gatesString] = submissionData.split(':');
     const numQubits = parseInt(numQubitsString);
 
@@ -21,49 +20,53 @@ function parseAndSetup(submissionData) {
         });
     });
 
-    // console.log("numQubits: ", numQubits);
-    // console.log("qubitStates: ", qubitStates);
-    // console.log("gateOperations: ", gateOperations);
 
-    const compositeQubit = new TensoredQubits(Array(numQubits).fill(new Qubit()));
+    const qubitArray = Array(numQubits).fill().map(() => new Qubit());
+    const compositeQubit = new TensoredQubits(qubitArray);
+
 
     for (let i = 0; i < gateOperations.length; i++) {
         const operations = gateOperations[i];
-        console.log(compositeQubit.getState().toString());
+
         for (let j = 0; j < operations.length; j++) {
             const { gateType, qubitIndex } = operations[j];
             const gate = Gate.createGate(gateType);
+
             compositeQubit.applyGate({ gate, qubitIndex, controlQubitIndex: 0 });
-            console.log("gateType: ", gateType, "qubitIndex: ", qubitIndex);
+
+
         }
-        console.log(compositeQubit.getState().toString());
+;
     }
 
     const probabilities = [];
     const states = compositeQubit.getState().toArray();
     for (let i = 0; i < states.length; i++) {
         const state = states[i];
-        console.log(state);
         for (let j = 0; j < state.length; j++) {
             const complexNumber = state[j];
-            // console.log(complexNumber);
+
             const probability = math.pow(complexNumber.re, 2) + math.pow(complexNumber.im, 2);
             probabilities.push(probability);
         }
         
     }
 
-    // console.log(probabilities);
+    console.log(probabilities);
+
 
     return probabilities;
 
 
 }
 
-const submissionData = '2:0:[Y0]';
+// const submissionData = '2:0:[Y1]';
 
-const qubits2 = parseAndSetup(submissionData);
+// const qubits2 = parseAndSetup(submissionData);
 
-// console.log(qubits2.getState().toString());
+// console.log(qubits2.toString());
 
 module.exports = parseAndSetup;
+
+
+
