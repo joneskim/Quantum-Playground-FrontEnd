@@ -1,0 +1,182 @@
+.quantum-circuit {
+  margin-top: 50px;
+  margin-left: 100px;
+  flex: 1;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.circuit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  background: white;
+}
+
+.circuit-workspace {
+  top: 10px;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  position: relative;
+}
+
+.qubit-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 0.5rem;
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 2;
+}
+
+.qubit-label {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #333;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.circuit-grid {
+  flex-grow: 1;
+  position: relative;
+  overflow-x: auto;
+  padding: 0;
+}
+
+.grid-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.qubit-line {
+  height: 60px;
+  position: relative;
+}
+
+.qubit-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #e0e0e0;
+}
+
+.grid-cells {
+  position: relative;
+  z-index: 1;
+}
+
+.grid-row {
+  display: flex;
+  height: 60px;
+  gap: 0.5rem;
+}
+
+.grid-cell {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px dashed #dee2e6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.grid-cell:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.grid-cell.selectable {
+  border-style: solid;
+  border-color: #2196F3;
+}
+
+.grid-cell.control-active {
+  background: #e3f2fd;
+}
+
+.circuit-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1rem;
+  background: white;
+  border-top: 1px solid #dee2e6;
+  position: sticky;
+  left: 0;
+  bottom: 0;
+}
+
+.control-button {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.control-button:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.run-button {
+  background: #2196F3;
+  color: white;
+  border: none;
+}
+
+.run-button:hover {
+  background: #1976D2;
+}
+
+.results-section {
+  padding: 1rem;
+  background: white;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Circuit grid scrollbar */
+.circuit-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.circuit-grid::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+.circuit-grid::-webkit-scrollbar-thumb {
+  background: #dee2e6;
+  border-radius: 3px;
+}
+
+.circuit-grid::-webkit-scrollbar-thumb:hover {
+  background: #ced4da;
+}

@@ -1,0 +1,300 @@
+.gate-visualizer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.gate-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.gate-symbol {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.gate-name {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+.empty-cell {
+  width: 100%;
+  height: 100%;
+  border: 1px dashed #dee2e6;
+  border-radius: 4px;
+}
+
+/* Control Point Styling */
+.control {
+  position: relative;
+}
+
+.control-point {
+  width: 12px;
+  height: 12px;
+  background: #333;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.control-line {
+  width: 2px;
+  background: #333;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.control-line.up {
+  transform: translateX(-50%) rotate(180deg);
+  transform-origin: center bottom;
+}
+
+/* Target Styling */
+.target {
+  position: relative;
+}
+
+.target-symbol {
+  font-size: 1.5rem;
+  color: #343a40;
+}
+
+/* SWAP Gate Styling */
+.swap {
+  position: relative;
+}
+
+.swap-symbol {
+  font-size: 1.5rem;
+  color: #343a40;
+}
+
+/* Hover Effects */
+.gate-visualizer:hover .gate-content {
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Connection Lines for Multi-Qubit Gates */
+.control::before,
+.target::before,
+.swap::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background-color: #343a40;
+  transform: translateX(-50%);
+  z-index: -1;
+}
+
+.gate {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    cursor: pointer;
+    position: relative;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.empty-gate {
+    width: 60px;
+    height: 60px;
+    margin: 5px;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+}
+
+.gate.standard {
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.gate.standard:hover {
+    background: #f0f8ff;
+    transform: scale(1.05);
+}
+
+.gate-symbol {
+    font-weight: bold;
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 2px;
+}
+
+.gate-name {
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gate.control {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.control-point {
+  width: 12px;
+  height: 12px;
+  background: #333;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.control-line {
+  width: 2px;
+  background: #333;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.gate.target {
+    border: none;
+}
+
+.target-circle {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.target-plus {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Tooltip styles */
+.gate[title] {
+    position: relative;
+}
+
+.gate[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+.gate-visualizer.cnot {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.gate-symbol.cnot {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* CNOT target styling */
+.cnot-target {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cnot-circle {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #333;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.cnot-plus {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+.cnot-line {
+  background: #333;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+}
+
+.cnot-line.horizontal {
+  width: 20px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.cnot-line.vertical {
+  width: 2px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+}
+
+/* CZ target styling */
+.cz-target {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Connection line styling */
+.connection-line {
+  position: absolute;
+  width: 2px;
+  background: #333;
+  transform-origin: center;
+  z-index: -1;
+}

@@ -23,6 +23,18 @@ class Gate {
                 return Gate.createZGate();
             case 'H':
                 return Gate.createHadamardGate();
+            case 'S':
+                return Gate.createSGate();
+            case 'T':
+                return Gate.createTGate();
+            case 'I':
+                return Gate.createIdentityGate();
+            case 'CNOT':
+                return Gate.createCNOTGate();
+            case 'CCNOT':
+                return Gate.createToffoliGate();
+            case 'SWAP':
+                return Gate.createSWAPGate();
             default:
                 throw new Error(`Unsupported gate: ${gateName}`);
         }
@@ -53,52 +65,73 @@ class Gate {
     }
 
     static createHadamardGate() {
-        console.log('Creating Hadamard gate');
-        const hadamardGateMatrix = math.multiply(1 / math.sqrt(2), math.matrix([
-            [1, 1],
-            [1, -1]
-        ]));
-        return new Gate(hadamardGateMatrix);
+        const hGateMatrix = math.matrix([
+            [1/math.sqrt(2), 1/math.sqrt(2)],
+            [1/math.sqrt(2), -1/math.sqrt(2)]
+        ]);
+        return new Gate(hGateMatrix);
     }
 
-    static createControlledGate(gate) {
-        const controlledGateMatrix = math.matrix([
+    static createSGate() {
+        const sGateMatrix = math.matrix([
+            [1, 0],
+            [0, math.complex(0, 1)]
+        ]);
+        return new Gate(sGateMatrix);
+    }
+
+    static createTGate() {
+        const tGateMatrix = math.matrix([
+            [1, 0],
+            [0, math.exp(math.complex(0, math.PI/4))]
+        ]);
+        return new Gate(tGateMatrix);
+    }
+
+    static createIdentityGate() {
+        const iGateMatrix = math.matrix([
+            [1, 0],
+            [0, 1]
+        ]);
+        return new Gate(iGateMatrix);
+    }
+
+    static createCNOTGate() {
+        const cnotMatrix = math.matrix([
             [1, 0, 0, 0],
             [0, 1, 0, 0],
-            [0, 0, gate.getMatrix().get([0, 0]), gate.getMatrix().get([0, 1])],
-            [0, 0, gate.getMatrix().get([1, 0]), gate.getMatrix().get([1, 1])]
+            [0, 0, 0, 1],
+            [0, 0, 1, 0]
         ]);
-        return new Gate(controlledGateMatrix);
+        return new Gate(cnotMatrix);
     }
 
-    static createControlledXGate() {
-        return Gate.createControlledGate(Gate.createXGate());
+    static createToffoliGate() {
+        const size = 8;
+        const matrix = math.zeros([size, size]);
+        
+        for (let i = 0; i < size; i++) {
+            const binary = i.toString(2).padStart(3, '0');
+            if (binary[0] === '1' && binary[1] === '1') {
+                const flippedBit = binary[2] === '0' ? '1' : '0';
+                const newState = parseInt(binary.slice(0, 2) + flippedBit, 2);
+                matrix.set([i, newState], 1);
+            } else {
+                matrix.set([i, i], 1);
+            }
+        }
+        
+        return new Gate(matrix);
     }
 
-    static createControlledYGate() {
-        return Gate.createControlledGate(Gate.createYGate());
-    }
-
-    static createControlledZGate() {
-        return Gate.createControlledGate(Gate.createZGate());
-    }
-
-    static createControlledHadamardGate() {
-        return Gate.createControlledGate(Gate.createHadamardGate());
-    }
-
-    static createControlledControlledGate(gate) {
-        const controlledControlledGateMatrix = math.matrix([
-            [1, 0, 0, 0, 0, 0, 0, 0],
-            [0, 1, 0 ,0 ,0 ,0 ,0 ,0],
-            [0, 0, 1, 0, 0, 0, 0, 0],
-            [0 ,0 ,0 ,1 ,0 ,0 ,0 ,0],
-            [0 ,0 ,0 ,0 ,1 ,0 ,0 ,0],
-            [0 ,0 ,0 ,0 ,0 ,1 ,0 ,0],
-            [0 ,0 ,0 ,0 ,0 ,0 ,gate.getMatrix().get([0, 0]), gate.getMatrix().get([0, 1])],
-            [0 ,0 ,0 ,0 ,0 ,0 ,gate.getMatrix().get([1, 0]), gate.getMatrix().get([1, 1])]
+    static createSWAPGate() {
+        const swapMatrix = math.matrix([
+            [1, 0, 0, 0],
+            [0, 0, 1, 0],
+            [0, 1, 0, 0],
+            [0, 0, 0, 1]
         ]);
-        return new Gate(controlledControlledGateMatrix);
+        return new Gate(swapMatrix);
     }
 }
 
