@@ -1,49 +1,53 @@
-const math = require('mathjs');
+import Complex from './Complex';
 
-class Complex {
-  constructor(re, im) {
-    this.re = re;
-    this.im = im;
-  }
+export class Qubit {
+    constructor(alpha = 1, beta = 0) {
+        // Default to |0⟩ state
+        this.state = [
+            new Complex(alpha, 0),
+            new Complex(beta, 0)
+        ];
+        this.normalize();
+    }
 
-  toString() {
-    return `${this.re} + ${this.im}i`;
-  }
+    normalize() {
+        const normalizationFactor = Math.sqrt(
+            this.state[0].multiply(this.state[0].conjugate()).real +
+            this.state[1].multiply(this.state[1].conjugate()).real
+        );
+
+        this.state = this.state.map(amplitude =>
+            amplitude.divide(new Complex(normalizationFactor, 0))
+        );
+    }
+
+    // Apply single-qubit gates
+    applyGate(gate) {
+        const newState = [
+            gate[0][0].multiply(this.state[0]).add(gate[0][1].multiply(this.state[1])),
+            gate[1][0].multiply(this.state[0]).add(gate[1][1].multiply(this.state[1]))
+        ];
+        this.state = newState;
+        this.normalize();
+    }
+
+    measure() {
+        const prob0 = this.state[0].multiply(this.state[0].conjugate()).real;
+        const random = Math.random();
+        
+        if (random < prob0) {
+            this.state = [new Complex(1, 0), new Complex(0, 0)];
+            return 0;
+        } else {
+            this.state = [new Complex(0, 0), new Complex(1, 0)];
+            return 1;
+        }
+    }
+
+    toString() {
+        return `${this.state[0].toString()}|0⟩ + ${this.state[1].toString()}|1⟩`;
+    }
 }
 
-class Qubit {
-  constructor(input) {
-    this.state = math.matrix(input.map(complex => [complex.re, complex.im]));
-  }
-
-  getState() {
-    const complexArray = math.toArray(this.state);
-    return complexArray.map(arr => new Complex(arr[0], arr[1]));
-  }
-
-  applyGate(gate) {
-    this.state = math.multiply(gate.getMatrix(), this.state);
-  }
-
-  printState() {
-    const state = this.getState();
-    const stateString = state.map(complex => complex.toString());
-    console.log(stateString.join(", "));
-  }
-}
-
-class CompositeQubit {
-  constructor(qubits) {
-    const stateArray = qubits.map(qubit => math.toArray(qubit.getState()));
-    this.state = math.matrix(stateArray);
-  }
-
-  getState() {
-    const complexArray = math.toArray(this.state);
-    return complexArray.map(arr => new Complex(arr[0], arr[1]));
-  }
-
-  applyGate(gate) {
-    this.state = math.multiply(gate.getMatrix(), this.state);
-  }
-}
+const QubitInstance = Qubit;
+export default QubitInstance;
