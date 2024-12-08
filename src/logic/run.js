@@ -1,72 +1,85 @@
-const { Qubit, TensoredQubits } = require('./qubit');
-const { Gate } = require('./Circuit'); // Adjust the path as needed
-const math = require('mathjs');
+import Qubit from './Qubit';
+import CompositeQubit from './CompositeQubit';
+import { QuantumGates } from './QuantumGates';
 
+const parseAndSetup = (submissionData) => {
+    // Parse the submission data string format: "numQubits:initialStates:operations"
+    const [numQubits, initialStates, operationsString] = submissionData.split(':');
+    const numQubitsInt = parseInt(numQubits);
 
-function parseAndSetup(submissionData) {
-    const [numQubitsString, qubitStatesString, gatesString] = submissionData.split(':');
-    const numQubits = parseInt(numQubitsString);
+    // Initialize qubits
+    const qubits = Array(numQubitsInt).fill().map(() => new Qubit());
+    const circuit = new CompositeQubit(qubits);
 
-    const qubitStates = qubitStatesString.split('-').map(state => parseInt(state));
+    // If there are no operations, return initial probabilities
+    if (!operationsString) {
+        const numStates = Math.pow(2, numQubitsInt);
+        const probabilities = Array(numStates).fill(0);
+        probabilities[0] = 1; // Initial state |0...0⟩
+        return probabilities;
+    }
 
-    const gateOperations = gatesString.split(']-').map(operations => {
-        const operationsArray = operations.substring(1).split('-');
+    // Parse and apply operations
+    const operations = operationsString
+        .slice(1, -1) // Remove outer brackets
+        .split(']-[')
+        .map(step => step.split('-'));
 
-        const filteredOperations = operationsArray.filter(operation => operation !== '');
-
-        return filteredOperations.map(operation => {
-            const [gateType, qubitIndex] = operation.split('');
-            return { gateType, qubitIndex: parseInt(qubitIndex) };
+    operations.forEach(step => {
+        step.forEach(operation => {
+            // Parse operation string
+            if (operation.includes('_')) {
+                // Controlled operation
+                const [gate, qubits] = operation.split('_');
+                const targetQubit = parseInt(gate.slice(1));
+                const controlQubit = parseInt(qubits);
+                
+                switch (gate[0]) {
+                    case 'X':
+                        circuit.applyCNOT(controlQubit, targetQubit);
+                        break;
+                    case 'Z':
+                        circuit.applyCZ(controlQubit, targetQubit);
+                        break;
+                }
+            } else {
+                // Single qubit operation
+                const gate = operation.slice(0, -1);
+                const qubit = parseInt(operation.slice(-1));
+                
+                switch (gate) {
+                    case 'H':
+                        circuit.applyHadamard(qubit);
+                        break;
+                    case 'X':
+                        circuit.applyPauliX(qubit);
+                        break;
+                    case 'Y':
+                        circuit.applyPauliY(qubit);
+                        break;
+                    case 'Z':
+                        circuit.applyPauliZ(qubit);
+                        break;
+                    case 'S':
+                        circuit.applyPhase(qubit);
+                        break;
+                    case 'T':
+                        circuit.applyT(qubit);
+                        break;
+                }
+            }
         });
     });
 
-
-    const qubitArray = Array(numQubits).fill().map(() => new Qubit());
-    const compositeQubit = new TensoredQubits(qubitArray);
-
-
-    for (let i = 0; i < gateOperations.length; i++) {
-        const operations = gateOperations[i];
-
-        for (let j = 0; j < operations.length; j++) {
-            const { gateType, qubitIndex } = operations[j];
-            const gate = Gate.createGate(gateType);
-
-            compositeQubit.applyGate({ gate, qubitIndex, controlQubitIndex: 0 });
-
-
-        }
-;
+    // Calculate probabilities for all possible states
+    const numStates = Math.pow(2, numQubitsInt);
+    const probabilities = Array(numStates).fill(0);
+    
+    for (let i = 0; i < numStates; i++) {
+        probabilities[i] = circuit.getProbability(i);
     }
-
-    const probabilities = [];
-    const states = compositeQubit.getState().toArray();
-    for (let i = 0; i < states.length; i++) {
-        const state = states[i];
-        for (let j = 0; j < state.length; j++) {
-            const complexNumber = state[j];
-
-            const probability = math.pow(complexNumber.re, 2) + math.pow(complexNumber.im, 2);
-            probabilities.push(probability);
-        }
-        
-    }
-
-    console.log(probabilities);
-
 
     return probabilities;
+};
 
-
-}
-
-// const submissionData = '2:0:[Y1]';
-
-// const qubits2 = parseAndSetup(submissionData);
-
-// console.log(qubits2.toString());
-
-module.exports = parseAndSetup;
-
-
-
+export default parseAndSetup;

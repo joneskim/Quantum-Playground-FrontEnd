@@ -3,7 +3,7 @@ import QuantumStateHistogram from './QuantumHistrogram';
 import GateVisualizer from './GateVisualizer';
 import './CircuitGrid.css';
 
-const parseAndSetup = require('../logic/run');
+import parseAndSetup from '../logic/run';
 
 const STORAGE_KEY = 'quantum_circuit_state';
 
