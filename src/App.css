@@ -106,3 +106,33 @@
   overflow-x: auto;
   display: flex;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  min-height: 100vh;
+  width: 100%;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  background: #f8f9fa;
+}
+
+.grid-sidebar {
+  background: #f8f9fa;
+  padding: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.grid-main {
+  padding: 0;
+  overflow-x: auto;
+  background: #f8f9fa;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f8f9fa;
+}

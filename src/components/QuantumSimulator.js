@@ -9,10 +9,13 @@ function SimulatorPage() {
   // You can add state and useEffect here if you need to fetch data or perform other actions
 
   return (
-    <div className='container'>
-      <ToolBar />
-      <CircuitGrid />
-      {/* <QuantumCircuitSimulator /> */}
+    <div className='grid-container'>
+      <div className='grid-sidebar'>
+        <ToolBar />
+      </div>
+      <div className='grid-main'>
+        <CircuitGrid />
+      </div>
     </div>
   );
 }
