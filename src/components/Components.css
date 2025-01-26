@@ -48,9 +48,46 @@
     border-radius: 4px;
 }
 
+.quantum-simulator-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
 
-/* ... existing styles ... */
+.quantum-form-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
 
+.quantum-results-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.quantum-results-section h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.list-group-item {
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.form-control:focus {
+    background-color: white;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
 .state-display {
     margin-top: 20px;
     background-color: #f8f8f8;

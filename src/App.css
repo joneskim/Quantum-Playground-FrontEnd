@@ -90,14 +90,14 @@
 .result-content {
   padding: 1rem;
   border-radius: 0.25rem;
-  background: #f8f9fa;
+  background: #fff;
   margin-top: 1rem;
 }
 
 .simulator-layout {
   display: flex;
   min-height: 100vh;
-  background: #f8f9fa;
+  background: #fff;
 }
 
 .main-content {
@@ -115,11 +115,11 @@
   gap: 0;
   margin: 0;
   padding: 0;
-  background: #f8f9fa;
+  background: #fff;
 }
 
 .grid-sidebar {
-  background: #f8f9fa;
+  background: #fff;
   padding: 0;
   height: 100vh;
   overflow-y: auto;
@@ -128,7 +128,7 @@
 .grid-main {
   padding: 0;
   overflow-x: auto;
-  background: #f8f9fa;
+  background: #fff;
 }
 
 body {
