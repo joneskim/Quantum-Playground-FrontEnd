@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './ToolBar.css';
 
 const ToolBar = () => {
   const [selectedGate, setSelectedGate] = useState(null);
@@ -15,8 +14,8 @@ const ToolBar = () => {
       { name: 'I', description: 'Identity Gate', symbol: 'I' },
     ],
     'Controlled Gates': [
-      { name: 'X', description: 'Controlled NOT (CNOT)', symbol: '●⊕', controlled: true, targetGate: 'X' },
-      { name: 'Z', description: 'Controlled Z (CZ)', symbol: '●Z', controlled: true, targetGate: 'Z' },
+      { name: 'CNOT', description: 'Controlled NOT (CNOT)', symbol: '●⊕', controlled: true },
+      { name: 'CZ', description: 'Controlled Z (CZ)', symbol: '●Z', controlled: true },
     ]
   };
 
@@ -71,10 +70,12 @@ const ToolBar = () => {
     ]
   };
 
-  const handleGateClick = (gateInfo) => {
-    setSelectedGate(gateInfo);
-    const event = new CustomEvent('gateSelected', {
-      detail: gateInfo,
+  const handleGateClick = (gate) => {
+    setSelectedGate(gate);
+    
+    // Create a custom event to notify other components
+    const event = new CustomEvent('gateSelected', { 
+      detail: gate,
       bubbles: true,
       cancelable: true
     });
@@ -82,58 +83,99 @@ const ToolBar = () => {
   };
 
   const handleAlgorithmClick = (algorithm) => {
-    // Dispatch event to load the algorithm circuit
-    const event = new CustomEvent('algorithmSelected', {
+    // Create a custom event to notify other components
+    const event = new CustomEvent('algorithmSelected', { 
       detail: algorithm,
+      bubbles: true,
+      cancelable: true
+    });
+    window.dispatchEvent(event);
+    
+    // Clear selected gate when an algorithm is selected
+    setSelectedGate(null);
+  };
+
+  const handleRunCircuit = () => {
+    const event = new CustomEvent('runCircuit', {
       bubbles: true,
       cancelable: true
     });
     window.dispatchEvent(event);
   };
 
+  const handleClearCircuit = () => {
+    const event = new CustomEvent('clearCircuit', {
+      bubbles: true,
+      cancelable: true
+    });
+    window.dispatchEvent(event);
+    setSelectedGate(null);
+  };
+
   return (
-    <div className="toolbar">
-      <div className="toolbar-header">
-        <h2>Quantum Gates & Algorithms</h2>
+    <div className="h-full overflow-y-auto p-4">
+      <div className="mb-6 pb-4 border-b border-gray-200">
+        <h2 className="text-xl font-bold text-gray-800">Quantum Toolkit</h2>
       </div>
       
-      <div className="gates-container">
+      <div className="space-y-6">
         {Object.entries(gates).map(([category, gateList]) => (
-          <div key={category} className="gate-category">
-            <h3>{category}</h3>
-            <div className="gate-grid">
-              {gateList.map((gateInfo) => (
+          <div key={category} className="pb-2">
+            <h3 className="text-sm font-medium text-gray-600 mb-3 pb-2 border-b border-gray-100">{category}</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {gateList.map((gate) => (
                 <button
-                  key={gateInfo.name + (gateInfo.controlled ? '-controlled' : '')}
-                  className={`gate-button ${selectedGate?.name === gateInfo.name && selectedGate?.controlled === gateInfo.controlled ? 'selected' : ''}`}
-                  onClick={() => handleGateClick(gateInfo)}
-                  title={gateInfo.description}
+                  key={gate.name + (gate.controlled ? '-controlled' : '')}
+                  className={`p-2 rounded-md text-center transition-colors ${
+                    selectedGate && selectedGate.name === gate.name && selectedGate.controlled === gate.controlled
+                      ? 'bg-quantum-primary text-white'
+                      : 'bg-white hover:bg-quantum-background border border-gray-200'
+                  }`}
+                  onClick={() => handleGateClick(gate)}
+                  title={gate.description}
                 >
-                  <span className="gate-symbol">{gateInfo.symbol}</span>
-                  <span className="gate-name">{gateInfo.controlled ? (gateInfo.name === 'X' ? 'CNOT' : 'CZ') : gateInfo.name}</span>
+                  <div className="text-lg font-bold">{gate.symbol || gate.name}</div>
                 </button>
               ))}
             </div>
           </div>
         ))}
 
-        {Object.entries(algorithms).map(([category, algorithmList]) => (
-          <div key={category} className="algorithm-category">
-            <h3>{category}</h3>
-            <div className="algorithm-grid">
-              {algorithmList.map((algorithm) => (
-                <button
-                  key={algorithm.name}
-                  className="algorithm-button"
-                  onClick={() => handleAlgorithmClick(algorithm)}
-                  title={algorithm.description}
-                >
-                  <span className="algorithm-name">{algorithm.name}</span>
-                </button>
-              ))}
-            </div>
+        <div className="pt-4 border-t border-gray-200">
+          <h3 className="text-sm font-medium text-gray-600 mb-3">Algorithms</h3>
+          <div className="space-y-2">
+            {Object.entries(algorithms).map(([category, algoList]) => (
+              <div key={category}>
+                <h4 className="text-xs text-gray-500 mb-2">{category}</h4>
+                {algoList.map((algo) => (
+                  <button
+                    key={algo.name}
+                    className="w-full text-left p-2 rounded-md mb-2 bg-white hover:bg-quantum-background border border-gray-200 transition-colors"
+                    onClick={() => handleAlgorithmClick(algo)}
+                  >
+                    <div className="font-medium text-gray-800">{algo.name}</div>
+                    <div className="text-xs text-gray-500 mt-1">{algo.description}</div>
+                  </button>
+                ))}
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        <div className="pt-4 border-t border-gray-200">
+          <button 
+            className="w-full py-2 px-4 bg-quantum-primary text-white rounded-md hover:bg-blue-600 transition-colors"
+            onClick={handleRunCircuit}
+          >
+            Run Circuit
+          </button>
+          <button 
+            className="w-full mt-2 py-2 px-4 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+            onClick={handleClearCircuit}
+          >
+            Clear Circuit
+          </button>
+        </div>
       </div>
     </div>
   );

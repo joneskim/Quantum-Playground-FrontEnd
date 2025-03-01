@@ -8,6 +8,69 @@
 }
 
 .circuit-container {
+  @apply bg-white rounded-lg shadow-quantum p-6 mb-6;
+}
+
+.circuit-workspace {
+  @apply relative flex;
+}
+
+.qubit-labels {
+  @apply flex flex-col justify-around pr-4 text-sm font-medium text-gray-700;
+}
+
+.circuit-grid {
+  @apply relative flex-grow;
+}
+
+.grid-lines {
+  @apply absolute inset-0;
+}
+
+.qubit-line {
+  @apply h-[60px] border-b border-gray-300;
+}
+
+.grid-cells {
+  @apply relative z-10;
+}
+
+.grid-row {
+  @apply flex h-[60px];
+}
+
+.grid-cell {
+  @apply w-[60px] h-[60px] border border-gray-200 flex items-center justify-center cursor-pointer transition-colors;
+}
+
+.grid-cell.selectable:hover {
+  @apply bg-quantum-background;
+}
+
+.grid-cell.control-active {
+  @apply bg-quantum-primary bg-opacity-10;
+}
+
+.circuit-controls {
+  @apply flex flex-wrap gap-3 mb-6;
+}
+
+.control-button {
+  @apply px-4 py-2 bg-quantum-surface text-gray-700 rounded-lg shadow-sm hover:bg-gray-50 transition-colors;
+}
+
+.run-button {
+  @apply bg-quantum-primary text-white hover:bg-quantum-primary/90;
+}
+
+.results-section {
+  @apply bg-white rounded-lg shadow-quantum p-6;
+}
+
+```
+```
+
+.circuit-container {
   display: flex;
   flex-direction: column;
   gap: 2rem;

@@ -1,15 +1,14 @@
 import React from 'react';
-import './GateVisualizer.css';
 
 const GateVisualizer = ({ gate, isControl, isTarget }) => {
   if (!gate && !isControl && !isTarget) {
-    return <div className="empty-cell" />;
+    return <div className="w-full h-full" />;
   }
 
   if (isControl) {
     return (
-      <div className="gate-visualizer control">
-        <div className="control-point" />
+      <div className="flex items-center justify-center w-full h-full">
+        <div className="w-3 h-3 rounded-full bg-quantum-primary" />
       </div>
     );
   }
@@ -18,31 +17,31 @@ const GateVisualizer = ({ gate, isControl, isTarget }) => {
     const TargetSymbol = () => {
       if (gate.name === 'X') {
         return (
-          <div className="cnot-target">
-            <div className="cnot-circle" />
-            <div className="cnot-plus">
-              <div className="cnot-line horizontal" />
-              <div className="cnot-line vertical" />
+          <div className="relative flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full border-2 border-quantum-primary" />
+            <div className="absolute">
+              <div className="w-8 h-0.5 bg-quantum-primary" />
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-8 bg-quantum-primary" />
             </div>
           </div>
         );
       }
       if (gate.name === 'Z') {
-        return <span className="cz-target">Z</span>;
+        return <span className="text-lg font-bold text-quantum-primary">Z</span>;
       }
-      return <span className="target-symbol">{gate.symbol}</span>;
+      return <span className="text-lg font-bold text-quantum-primary">{gate.symbol}</span>;
     };
 
     return (
-      <div className="gate-visualizer target">
+      <div className="flex items-center justify-center w-full h-full">
         <TargetSymbol />
       </div>
     );
   }
 
   return (
-    <div className="gate-visualizer">
-      <span className="gate-symbol">{gate.symbol}</span>
+    <div className="flex items-center justify-center w-full h-full bg-quantum-primary bg-opacity-10 rounded">
+      <span className="text-lg font-bold text-quantum-primary">{gate.symbol}</span>
     </div>
   );
 };

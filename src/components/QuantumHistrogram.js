@@ -1,44 +1,72 @@
 import React from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 
-const QuantumStateHistogram = ({ numQubits, probabilities }) => {
-  const labels = Array.from({ length: Math.pow(2, numQubits) }, (_, i) =>
-    i.toString(2).padStart(numQubits, '0')
+const QuantumStateHistogram = ({ data }) => {
+  const { numQubits, probabilities } = data;
+  
+  if (!probabilities || probabilities.length === 0) {
+    return (
+      <div className="h-60 w-full flex items-center justify-center text-gray-500">
+        Run the circuit to see the quantum state distribution
+      </div>
+    );
+  }
+
+  // Sort probabilities by state for consistent display
+  const sortedProbabilities = [...probabilities].sort((a, b) => 
+    a.state.localeCompare(b.state)
   );
 
-  const data = {
-    labels,
+  const chartData = {
+    labels: sortedProbabilities.map(item => item.state),
     datasets: [
       {
-        label: 'Probabilities of Output States',
-        data: probabilities,
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 0.5,
+        label: 'Probability',
+        data: sortedProbabilities.map(item => item.probability),
+        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+        borderColor: 'rgba(59, 130, 246, 1)',
+        borderWidth: 1,
       },
     ],
   };
 
   const options = {
-    scales: { y: { beginAtZero: true } },
+    responsive: true,
     maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 1,
+        title: {
+          display: true,
+          text: 'Probability'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Quantum State'
+        }
+      }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const value = context.parsed.y;
+            return `Probability: ${(value * 100).toFixed(1)}%`;
+          }
+        }
+      }
+    }
   };
 
-  // Use a line chart when there are only two probabilities
-  if (probabilities.length === 2) {
-    return (
-      <div style={{ height: '60%', width: '70%' }} className="Histogram">
-        <Line data={data} options={options} />
-      </div>
-    );
-  } else {
-    return (
-      <div style={{ height: '60%', width: '70%' }} className="Histogram">
-        <Bar data={data} options={options} />
-      </div>
-    );
-  }
+  return (
+    <div className="h-60 w-full">
+      <Bar data={chartData} options={options} />
+    </div>
+  );
 };
 
 export default QuantumStateHistogram;
